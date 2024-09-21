@@ -1,0 +1,27 @@
+version: '3.8'
+services:
+  db:
+    image: postgres:15
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=trustno1
+      - POSTGRES_DB=bdr
+    ports:
+      - '5444:5432'
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ../database/Init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - '8080:80'
+    depends_on:
+      - db
+
+volumes:
+  pgdata:

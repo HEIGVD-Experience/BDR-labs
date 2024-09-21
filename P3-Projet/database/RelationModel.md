@@ -1,0 +1,57 @@
+# Modèle relationnel
+- Sport(<u>nom</u>,logo)
+- Club(<u>id</u>,id,nom,dateDeCreation,blason,nomSport) 
+  - Club.nomSport ref Sport.nom
+  - Club.nom NOT NULL
+  - Club.dateDeCreation NOT NULL
+  - Club.nomSport NOT NULL
+- Equipe(<u>id</u>,nom,idClub) 
+  - Equipe.idClub ref Club.id
+  - Equipe.nom NOT NULL
+  - Equipe.idClub NOT NULL
+- Personne(<u>id</u>,nom,prenom,dateDeNaissance,email)
+  - Personne.nom NOT NULL
+  - Personne.prenom NOT NULL
+  - Personne.dateDeNaissance NOT NULL
+  - Personne.email UNIQUE NOT NULL
+- JouePour(<u>id</u>,idEquipe,idPersonne,role,position,dateArrivee,dateDepart) 
+  - JouePour.idEquipe ref Equipe.id 
+  - JouePour.idPersonne ref Personne.id
+  - JouePour.idEquipe NOT NULL
+  - JouePour.role NOT NULL
+  - JouePour.position NOT NULL
+  - JouePour.dateArrivee NOT NULL
+- Evenement(<u>id</u>,type,heureDebut,heureFin,adresse,nomSport) 
+  - Evenement.nomSport ref Sport.nom
+  - Evenement.heureDebut NOT NULL
+  - Evenement.heureFin NOT NULL
+  - Evenement.adresse NOT NULL
+  - Evenement.nomSport NOT NULL
+- Statut(<u>id</u>,idPersonne,idEvenement,type,raison)
+  - Statut.idPersonne ref Personne.id
+  - Statut.idEvenement ref Evenement.id
+  - Statut.idPersonne NOT NULL
+  - Statut.idEvenement NOT NULL
+  - Statut.type NOT NULL
+- Match(<u>idEvenement</u>,numMatch,idEquipeDomicile,idEquipeAdversaire,nomSport) 
+  - Match.idEvenement ref Evenement.id 
+  - Match.idEquipeDomicile ref Equipe.id
+  - Match.idEquipeAdversaire ref Equipe.id
+  - Match.nomSport ref Sport.nom
+  - Match.numMatch UNIQUE NOT NULL
+  - Match.nomSport NOT NULL
+- FaitInterSport(<u>id</u>,nom)
+  - FaitInterSport.nom UNIQUE NOT NULL
+- FaitSport(<u>id</u>,nom,idFaitInterSport,nomSport)
+  - FaitSport.idFaitInterSport ref FaitInterSport.id
+  - FaitSport.nomSport ref Sport.nom
+  - FaitSport.nom NOT NULL
+  - FaitSport.idFaitInterSport NOT NULL
+  - FaitSport.nomSport NOT NULL
+- FaitMatch(<u>id</u>,heure,idFaitSport,idPersonne,idMatch) 
+  - FaitMatch.idFaitSport ref FaitSport.id
+  - FaitMatch.idPersonne ref Personne.id
+  - FaitMatch.idMatch ref Match.idEvenement
+  - FaitMatch.heure NOT NULL
+  - FaitMatch.idFaitSport NOT NULL
+  - FaitMatch.idMatch NOT NULL
